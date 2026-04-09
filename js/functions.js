@@ -1,17 +1,13 @@
 const checkLength = (string = '', maxSymbols = 1) => string.length <= maxSymbols;
 
 function comparesStringLength(string, length) {
-  if (string.length <= length) {
-    return true;
-  } else {
-    return false;
-  }
+  return string.length <= length;
 }
 
 
 const isPalindrome = (string = '') => {
 
-  string = string.replaceAll('', '').toLowerCase();
+  string = string.replaceAll(' ', '').toLowerCase();
 
   let reversed = '';
 
@@ -24,7 +20,7 @@ const isPalindrome = (string = '') => {
 };
 
 const verifyPalindrome = (string) => {
-  const normalizedString = string.replaceAll('', '').toUpperCase();
+  const normalizedString = string.replaceAll(' ', '').toUpperCase();
   const reverseString = normalizedString.split('').reverse().join('');
   return reverseString === normalizedString;
 };
@@ -47,7 +43,7 @@ const extractNumbers = (string) => {
 
 function stringToNumber(str) {
   return Number(
-    [...str].filter((item) => !isNaN(parseInt(item, 10))).join('') || NaN
+    [...String(str)].filter((item) => !isNaN(parseInt(item, 10))).join('') || NaN
   );
 }
 

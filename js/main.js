@@ -1,4 +1,8 @@
 /* eslint-disable no-console */
 
 import { getArrayMiniatures } from './createArrayMiniatures.js';
-console.log(getArrayMiniatures());
+import { renderPictures } from './pictures.js';
+
+const pictures = getArrayMiniatures();
+renderPictures(pictures);
+

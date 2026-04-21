@@ -36,6 +36,7 @@ const renderPictures = (pictures) => {
     fragment.appendChild(pictureElement);
   });
 
+  picturesContainer.innerHTML = '';
   picturesContainer.appendChild(fragment);
 };
 

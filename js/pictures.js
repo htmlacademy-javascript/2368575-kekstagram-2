@@ -1,17 +1,10 @@
+import { openBigPicture } from './big-picture.js';
+
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-/**
- * Создает DOM-элемент миниатюры на основе шаблона #picture
- * @param {Object} data - Объект с данными фотографии
- * @param {string} data.url - Адрес изображения
- * @param {string} data.description - Описание изображения
- * @param {number} data.likes - Количество лайков
- * @param {Array} data.comments - Массив комментариев
- * @returns {HTMLElement} - DOM-элемент миниатюры
- */
-
-const createPictureElement = ({ url, description, likes, comments }) => {
+const createPictureElement = (picture) => {
+  const { url, description, likes, comments } = picture;
   const pictureElement = pictureTemplate.cloneNode(true);
 
   const pictureImg = pictureElement.querySelector('.picture__img');
@@ -21,13 +14,14 @@ const createPictureElement = ({ url, description, likes, comments }) => {
   pictureElement.querySelector('.picture__likes').textContent = likes;
   pictureElement.querySelector('.picture__comments').textContent = comments.length;
 
+  pictureElement.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    openBigPicture(picture);
+  });
+
   return pictureElement;
 };
 
-/**
- * Отрисовывает миниатюры фотографий в блок .pictures
- * @param {Array} pictures - Массив объектов с данными фотографий
- */
 const renderPictures = (pictures) => {
   const fragment = document.createDocumentFragment();
 

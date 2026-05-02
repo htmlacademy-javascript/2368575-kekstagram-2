@@ -1,12 +1,19 @@
 /* eslint-disable no-console */
 
-import { getArrayMiniatures } from './createArrayMiniatures.js';
 import { renderPictures } from './pictures.js';
 import { initBigPictureHandlers } from './big-picture.js';
 import { initFormUpload } from './form-upload.js';
+import { getData } from './api.js';
+import { showDataError } from './messages.js';
 
-const pictures = getArrayMiniatures();
-renderPictures(pictures);
+getData()
+  .then((pictures) => {
+    renderPictures(pictures);
+  })
+  .catch(() => {
+    showDataError();
+  });
+
 initBigPictureHandlers();
 initFormUpload();
 

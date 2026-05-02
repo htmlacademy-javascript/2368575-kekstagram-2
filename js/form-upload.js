@@ -1,10 +1,13 @@
 import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
+import { sendData } from './api.js';
+import { showSuccessMessage, showErrorMessage } from './messages.js';
 
 const uploadFileInput = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadForm = document.querySelector('#upload-select-image');
 const uploadCancel = document.querySelector('#upload-cancel');
+const submitButton = document.querySelector('#upload-submit');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
 
@@ -74,10 +77,29 @@ const onUploadCancelClick = () => {
   closeForm();
 };
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 const onUploadFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    uploadForm.submit();
+    blockSubmitButton();
+    sendData(new FormData(uploadForm))
+      .then(() => {
+        closeForm();
+        showSuccessMessage();
+      })
+      .catch(() => {
+        showErrorMessage();
+      })
+      .finally(unblockSubmitButton);
   }
 };
 

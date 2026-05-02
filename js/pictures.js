@@ -23,6 +23,10 @@ const createPictureElement = (picture) => {
 };
 
 const renderPictures = (pictures) => {
+  if (!pictures || !pictures.length) {
+    return;
+  }
+
   const fragment = document.createDocumentFragment();
 
   pictures.forEach((picture) => {
@@ -30,7 +34,9 @@ const renderPictures = (pictures) => {
     fragment.appendChild(pictureElement);
   });
 
-  picturesContainer.innerHTML = '';
+  const existingPictures = picturesContainer.querySelectorAll('.picture');
+  existingPictures.forEach((picture) => picture.remove());
+
   picturesContainer.appendChild(fragment);
 };
 

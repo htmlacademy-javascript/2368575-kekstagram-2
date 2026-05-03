@@ -10,6 +10,9 @@ const uploadCancel = document.querySelector('#upload-cancel');
 const submitButton = document.querySelector('#upload-submit');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
+
+const DEFAULT_PREVIEW_SRC = 'img/upload-default-image.jpg';
 
 const MAX_HASHTAGS = 5;
 const MAX_HASHTAG_LENGTH = 20;
@@ -50,9 +53,41 @@ const validateHashtags = (value) => {
   });
 };
 
+const getHashtagErrorMessage = (value) => {
+  if (!value.trim()) {
+    return '';
+  }
+
+  const hashtags = value.trim().split(/\s+/);
+
+  if (hashtags.length > MAX_HASHTAGS) {
+    return `Максимум ${MAX_HASHTAGS} хэш-тегов`;
+  }
+
+  const lowerHashtags = hashtags.map((tag) => tag.toLowerCase());
+  const uniqueHashtags = new Set(lowerHashtags);
+
+  if (uniqueHashtags.size !== hashtags.length) {
+    return 'Хэш-теги не должны повторяться';
+  }
+
+  const invalidTag = hashtags.find((hashtag) => {
+    if (hashtag.length > MAX_HASHTAG_LENGTH) {
+      return true;
+    }
+    return !VALID_HASHTAG_REGEX.test(hashtag);
+  });
+
+  if (invalidTag) {
+    return 'Некорректный хэш-тег';
+  }
+
+  return '';
+};
+
 const validateDescription = (value) => value.length <= 140;
 
-pristine.addValidator(hashtagsInput, validateHashtags, 'Ошибка в хэш-тегах');
+pristine.addValidator(hashtagsInput, validateHashtags, getHashtagErrorMessage);
 pristine.addValidator(descriptionInput, validateDescription, 'Комментарий не должен быть длинее 140 символов');
 
 const openForm = () => {
@@ -67,9 +102,14 @@ const closeForm = () => {
   pristine.reset();
   resetScale();
   resetEffect();
+  imgUploadPreview.src = DEFAULT_PREVIEW_SRC;
 };
 
 const onUploadFileInputChange = () => {
+  const file = uploadFileInput.files[0];
+  if (file) {
+    imgUploadPreview.src = URL.createObjectURL(file);
+  }
   openForm();
 };
 

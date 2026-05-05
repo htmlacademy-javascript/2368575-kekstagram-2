@@ -15,10 +15,16 @@ const FilterType = {
 let currentFilter = FilterType.DEFAULT;
 let pictures = [];
 
-const getRandomPictures = (data) => {
-  const shuffled = [...data].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, RANDOM_PICTURES_COUNT);
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
 };
+
+const getRandomPictures = (data) => shuffleArray(data).slice(0, RANDOM_PICTURES_COUNT);
 
 const getDiscussedPictures = (data) =>
   [...data].sort((a, b) => b.comments.length - a.comments.length);

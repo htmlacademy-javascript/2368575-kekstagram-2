@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { renderPictures } from './pictures.js';
 import { initBigPictureHandlers } from './big-picture.js';
 import { initFormUpload } from './form-upload.js';

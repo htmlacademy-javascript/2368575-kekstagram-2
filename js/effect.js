@@ -92,6 +92,7 @@ const resetEffect = () => {
   document.querySelector('#effect-none').checked = true;
   imgUploadPreview.style.filter = '';
   effectLevelContainer.classList.add('hidden');
+  updateSliderOptions(EFFECTS['none']);
 };
 
 const initEffect = () => {

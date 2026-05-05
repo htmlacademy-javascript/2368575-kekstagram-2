@@ -9,6 +9,7 @@ const SCALE_MAX = 100;
 const SCALE_DEFAULT = 100;
 
 let currentScale = SCALE_DEFAULT;
+let isInitialized = false;
 
 const updateScale = () => {
   scaleControlValue.value = `${currentScale}%`;
@@ -35,8 +36,12 @@ const resetScale = () => {
 };
 
 const initScale = () => {
+  if (isInitialized) {
+    return;
+  }
   scaleControlSmaller.addEventListener('click', onScaleSmallerClick);
   scaleControlBigger.addEventListener('click', onScaleBiggerClick);
+  isInitialized = true;
 };
 
 export { initScale, resetScale };

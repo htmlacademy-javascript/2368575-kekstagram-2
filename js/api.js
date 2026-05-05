@@ -1,24 +1,45 @@
-const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
+const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram/';
 
 const getData = () =>
-  fetch(`${BASE_URL}/data`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Не удалось загрузить данные');
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${BASE_URL}/data`);
+    xhr.addEventListener('load', () => {
+      if (xhr.status === 200) {
+        try {
+          resolve(JSON.parse(xhr.response));
+        } catch (e) {
+          reject(new Error('Не удалось загрузить данные'));
+        }
+      } else {
+        reject(new Error('Не удалось загрузить данные'));
       }
-      return response.json();
     });
+    xhr.addEventListener('error', () => {
+      reject(new Error('Не удалось загрузить данные'));
+    });
+    xhr.send();
+  });
 
 const sendData = (formData) =>
-  fetch(BASE_URL, {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Не удалось отправить данные');
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', BASE_URL);
+    xhr.addEventListener('load', () => {
+      if (xhr.status === 200) {
+        try {
+          resolve(JSON.parse(xhr.response));
+        } catch (e) {
+          reject(new Error('Не удалось отправить данные'));
+        }
+      } else {
+        reject(new Error('Не удалось отправить данные'));
       }
-      return response.json();
     });
+    xhr.addEventListener('error', () => {
+      reject(new Error('Не удалось отправить данные'));
+    });
+    xhr.send(formData);
+  });
 
 export { getData, sendData };

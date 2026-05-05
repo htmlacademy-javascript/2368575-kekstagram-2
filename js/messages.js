@@ -62,13 +62,11 @@ const showErrorMessage = () => {
 };
 
 const showDataError = () => {
-  const dataErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
+  const dataErrorTemplate = document.querySelector('#data-error').content;
   const dataErrorElement = dataErrorTemplate.cloneNode(true);
-
   document.body.appendChild(dataErrorElement);
-
   setTimeout(() => {
-    dataErrorElement.remove();
+    document.querySelector('.data-error').remove();
   }, DATA_ERROR_SHOW_TIME);
 };
 

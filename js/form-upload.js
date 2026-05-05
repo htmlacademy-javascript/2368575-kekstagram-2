@@ -1,5 +1,5 @@
 import { initScale, resetScale } from './scale.js';
-import { initEffect, resetEffect } from './effect.js';
+import { initEffect, resetEffect, updateEffectsPreview } from './effect.js';
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './messages.js';
 
@@ -101,7 +101,9 @@ function closeForm() {
 function onDocumentKeydown(evt) {
   if (evt.key === 'Escape' && !uploadOverlay.classList.contains('hidden')) {
     const activeElement = document.activeElement;
-    if (activeElement !== hashtagsInput && activeElement !== descriptionInput) {
+    const isErrorMessageOpen = document.querySelector('.error');
+    const isSuccessMessageOpen = document.querySelector('.success');
+    if (activeElement !== hashtagsInput && activeElement !== descriptionInput && !isErrorMessageOpen && !isSuccessMessageOpen) {
       closeForm();
     }
   }
@@ -119,7 +121,9 @@ pristine.addValidator(descriptionInput, validateDescription, 'Комментар
 const onUploadFileInputChange = () => {
   const file = uploadFileInput.files[0];
   if (file) {
-    imgUploadPreview.src = URL.createObjectURL(file);
+    const imageUrl = URL.createObjectURL(file);
+    imgUploadPreview.src = imageUrl;
+    updateEffectsPreview(imageUrl);
   }
   openForm();
 };

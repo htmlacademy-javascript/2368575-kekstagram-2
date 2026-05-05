@@ -3,6 +3,7 @@ const effectLevelValue = document.querySelector('.effect-level__value');
 const effectsRadioList = document.querySelectorAll('.effects__radio');
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const effectLevelContainer = document.querySelector('.img-upload__effect-level');
+const effectsPreviewList = document.querySelectorAll('.effects__preview');
 
 const EFFECTS = {
   none: {
@@ -77,7 +78,7 @@ const applyEffect = (value) => {
 
 const onSliderUpdate = () => {
   const value = effectLevelSlider.noUiSlider.get();
-  effectLevelValue.value = value;
+  effectLevelValue.value = parseFloat(value);
   applyEffect(value);
 };
 
@@ -93,6 +94,12 @@ const resetEffect = () => {
   imgUploadPreview.style.filter = '';
   effectLevelContainer.classList.add('hidden');
   updateSliderOptions(EFFECTS['none']);
+};
+
+const updateEffectsPreview = (imageUrl) => {
+  effectsPreviewList.forEach((preview) => {
+    preview.style.backgroundImage = `url('${imageUrl}')`;
+  });
 };
 
 const initEffect = () => {
@@ -115,4 +122,4 @@ const initEffect = () => {
   effectLevelContainer.classList.add('hidden');
 };
 
-export { initEffect, resetEffect };
+export { initEffect, resetEffect, updateEffectsPreview };

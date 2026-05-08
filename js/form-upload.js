@@ -1,5 +1,5 @@
 import { initScale, resetScale } from './scale.js';
-import { initEffect, resetEffect } from './effect.js';
+import { initEffect, resetEffect, updateEffectsPreview } from './effect.js';
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './messages.js';
 
@@ -16,7 +16,7 @@ const DEFAULT_PREVIEW_SRC = 'img/upload-default-image.jpg';
 
 const MAX_HASHTAGS = 5;
 const MAX_HASHTAG_LENGTH = 20;
-const VALID_HASHTAG_REGEX = /^#[a-яёa-z0-9]{1,19}$/i;
+const VALID_HASHTAG_REGEX = /^#[a-яёa-z0-9]{1,19}$/iu;
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -87,28 +87,43 @@ const getHashtagErrorMessage = (value) => {
 
 const validateDescription = (value) => value.length <= 140;
 
-pristine.addValidator(hashtagsInput, validateHashtags, getHashtagErrorMessage);
-pristine.addValidator(descriptionInput, validateDescription, 'Комментарий не должен быть длинее 140 символов');
-
-const openForm = () => {
-  uploadOverlay.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-};
-
-const closeForm = () => {
+function closeForm() {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onDocumentKeydown);
   uploadForm.reset();
   pristine.reset();
   resetScale();
   resetEffect();
   imgUploadPreview.src = DEFAULT_PREVIEW_SRC;
+}
+
+function onDocumentKeydown(evt) {
+  if (evt.key === 'Escape' && !uploadOverlay.classList.contains('hidden')) {
+    const activeElement = document.activeElement;
+    const isErrorMessageOpen = document.querySelector('.error');
+    const isSuccessMessageOpen = document.querySelector('.success');
+    if (activeElement !== hashtagsInput && activeElement !== descriptionInput && !isErrorMessageOpen && !isSuccessMessageOpen) {
+      closeForm();
+    }
+  }
+}
+
+const openForm = () => {
+  uploadOverlay.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
 };
+
+pristine.addValidator(hashtagsInput, validateHashtags, getHashtagErrorMessage);
+pristine.addValidator(descriptionInput, validateDescription, 'Комментарий не должен быть длинее 140 символов');
 
 const onUploadFileInputChange = () => {
   const file = uploadFileInput.files[0];
   if (file) {
-    imgUploadPreview.src = URL.createObjectURL(file);
+    const imageUrl = URL.createObjectURL(file);
+    imgUploadPreview.src = imageUrl;
+    updateEffectsPreview(imageUrl);
   }
   openForm();
 };
@@ -143,22 +158,12 @@ const onUploadFormSubmit = (evt) => {
   }
 };
 
-const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape' && !uploadOverlay.classList.contains('hidden')) {
-    const activeElement = document.activeElement;
-    if (activeElement !== hashtagsInput && activeElement !== descriptionInput) {
-      closeForm();
-    }
-  }
-};
-
 const initFormUpload = () => {
   initScale();
   initEffect();
   uploadFileInput.addEventListener('change', onUploadFileInputChange);
   uploadCancel.addEventListener('click', onUploadCancelClick);
   uploadForm.addEventListener('submit', onUploadFormSubmit);
-  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 export { initFormUpload };

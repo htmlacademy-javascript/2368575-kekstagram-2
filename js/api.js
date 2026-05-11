@@ -1,4 +1,4 @@
-const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram/';
+const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 
 const getData = () =>
   new Promise((resolve, reject) => {
@@ -24,11 +24,16 @@ const getData = () =>
 const sendData = (formData) =>
   new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', BASE_URL);
+    xhr.open('POST', `${BASE_URL}/`);
     xhr.addEventListener('load', () => {
-      if (xhr.status === 200) {
+      if (xhr.status >= 200 && xhr.status < 300) {
         try {
-          resolve(JSON.parse(xhr.response));
+          const data = JSON.parse(xhr.response);
+          if (data.error) {
+            reject(new Error('Не удалось отправить данные'));
+          } else {
+            resolve(data);
+          }
         } catch (e) {
           reject(new Error('Не удалось отправить данные'));
         }

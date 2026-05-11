@@ -53,8 +53,16 @@ const renderComments = () => {
   }
 };
 
-const onCommentsLoaderClick = () => {
-  renderComments();
+const onDocumentKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    closeBigPicture(); // eslint-disable-line no-use-before-define
+  }
+};
+
+const closeBigPicture = () => {
+  bigPictureElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 const openBigPicture = (pictureData) => {
@@ -73,26 +81,13 @@ const openBigPicture = (pictureData) => {
   totalCommentCount.textContent = currentComments.length;
   commentCountBlock.classList.remove('hidden');
 
+  document.addEventListener('keydown', onDocumentKeydown);
   renderComments();
 };
 
-const closeBigPicture = () => {
-  bigPictureElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-};
-
 const initBigPictureHandlers = () => {
-  cancelButton.addEventListener('click', () => {
-    closeBigPicture();
-  });
-
-  commentsLoader.addEventListener('click', onCommentsLoaderClick);
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape' && !bigPictureElement.classList.contains('hidden')) {
-      closeBigPicture();
-    }
-  });
+  cancelButton.addEventListener('click', closeBigPicture);
+  commentsLoader.addEventListener('click', renderComments);
 };
 
 export { openBigPicture, closeBigPicture, initBigPictureHandlers };

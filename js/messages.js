@@ -4,24 +4,24 @@ const showSuccessMessage = () => {
   const successTemplate = document.querySelector('#success').content.querySelector('.success');
   const successElement = successTemplate.cloneNode(true);
 
+  const onSuccessKeydown = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      closeSuccessMessage(); // eslint-disable-line no-use-before-define
+    }
+  };
+
+  const onSuccessClick = (evt) => {
+    if (!evt.target.closest('.success__inner')) {
+      closeSuccessMessage(); // eslint-disable-line no-use-before-define
+    }
+  };
+
   const closeSuccessMessage = () => {
     successElement.remove();
     document.removeEventListener('keydown', onSuccessKeydown);
     document.removeEventListener('click', onSuccessClick);
   };
-
-  function onSuccessKeydown(evt) {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      closeSuccessMessage();
-    }
-  }
-
-  function onSuccessClick(evt) {
-    if (!evt.target.closest('.success__inner')) {
-      closeSuccessMessage();
-    }
-  }
 
   successElement.querySelector('.success__button').addEventListener('click', closeSuccessMessage);
   document.addEventListener('keydown', onSuccessKeydown);
@@ -34,25 +34,25 @@ const showErrorMessage = () => {
   const errorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorElement = errorTemplate.cloneNode(true);
 
+  const onErrorKeydown = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      evt.stopPropagation();
+      closeErrorMessage(); // eslint-disable-line no-use-before-define
+    }
+  };
+
+  const onErrorClick = (evt) => {
+    if (!evt.target.closest('.error__inner')) {
+      closeErrorMessage(); // eslint-disable-line no-use-before-define
+    }
+  };
+
   const closeErrorMessage = () => {
     errorElement.remove();
     document.removeEventListener('keydown', onErrorKeydown);
     document.removeEventListener('click', onErrorClick);
   };
-
-  function onErrorKeydown(evt) {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      evt.stopPropagation();
-      closeErrorMessage();
-    }
-  }
-
-  function onErrorClick(evt) {
-    if (!evt.target.closest('.error__inner')) {
-      closeErrorMessage();
-    }
-  }
 
   errorElement.querySelector('.error__button').addEventListener('click', closeErrorMessage);
   document.addEventListener('keydown', onErrorKeydown);
@@ -71,3 +71,4 @@ const showDataError = () => {
 };
 
 export { showSuccessMessage, showErrorMessage, showDataError };
+

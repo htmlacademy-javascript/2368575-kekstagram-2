@@ -14,6 +14,7 @@ const FilterType = {
 
 let currentFilter = FilterType.DEFAULT;
 let pictures = [];
+let activeFilterButton = null;
 
 const shuffleArray = (array) => {
   const shuffled = [...array];
@@ -55,14 +56,16 @@ const onFiltersFormClick = (evt) => {
     return;
   }
 
-  filtersForm.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+  activeFilterButton.classList.remove('img-filters__button--active');
   target.classList.add('img-filters__button--active');
+  activeFilterButton = target;
   currentFilter = target.id;
   onFilterChange();
 };
 
 const initFilters = (data) => {
   pictures = data;
+  activeFilterButton = filtersForm.querySelector('.img-filters__button--active');
   filtersElement.classList.remove('img-filters--inactive');
   filtersForm.addEventListener('click', onFiltersFormClick);
 };

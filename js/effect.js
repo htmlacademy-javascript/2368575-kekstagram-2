@@ -5,6 +5,8 @@ const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const effectLevelContainer = document.querySelector('.img-upload__effect-level');
 const effectsPreviewList = document.querySelectorAll('.effects__preview');
 
+const DEFAULT_EFFECT = 'none';
+
 const EFFECTS = {
   none: {
     filter: null,
@@ -50,7 +52,7 @@ const EFFECTS = {
   }
 };
 
-let currentEffect = 'none';
+let currentEffect = DEFAULT_EFFECT;
 
 const updateSliderOptions = (effect) => {
   effectLevelSlider.noUiSlider.updateOptions({
@@ -66,7 +68,7 @@ const updateSliderOptions = (effect) => {
 const applyEffect = (value) => {
   const effect = EFFECTS[currentEffect];
 
-  if (currentEffect === 'none') {
+  if (currentEffect === DEFAULT_EFFECT) {
     imgUploadPreview.style.filter = '';
     effectLevelContainer.classList.add('hidden');
     return;
@@ -89,11 +91,10 @@ const onEffectChange = (evt) => {
 };
 
 const resetEffect = () => {
-  currentEffect = 'none';
-  document.querySelector('#effect-none').checked = true;
-  imgUploadPreview.style.filter = '';
-  effectLevelContainer.classList.add('hidden');
-  updateSliderOptions(EFFECTS['none']);
+  currentEffect = DEFAULT_EFFECT;
+  document.querySelector(`#effect-${DEFAULT_EFFECT}`).checked = true;
+  updateSliderOptions(EFFECTS[DEFAULT_EFFECT]);
+  applyEffect(EFFECTS[DEFAULT_EFFECT].max);
 };
 
 const updateEffectsPreview = (imageUrl) => {

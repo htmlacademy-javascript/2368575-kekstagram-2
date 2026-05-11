@@ -14,21 +14,15 @@ const getRandomInteger = (a, b) => {
 const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
-  return function () {
+  return () => {
     if (previousValues.length >= max - min + 1) {
       return null;
     }
 
-    const maxAttempts = (max - min + 1) * 2;
-    let attempts = 0;
     let currentValue = getRandomInteger(min, max);
 
     while (previousValues.includes(currentValue)) {
-      if (attempts >= maxAttempts) {
-        return null;
-      }
       currentValue = getRandomInteger(min, max);
-      attempts++;
     }
 
     previousValues.push(currentValue);

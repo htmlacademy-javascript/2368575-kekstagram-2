@@ -65,6 +65,14 @@ const closeBigPicture = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
+const onCancelButtonClick = () => {
+  closeBigPicture();
+};
+
+const onCommentsLoaderClick = () => {
+  renderComments();
+};
+
 const openBigPicture = (pictureData) => {
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -86,8 +94,8 @@ const openBigPicture = (pictureData) => {
 };
 
 const initBigPictureHandlers = () => {
-  cancelButton.addEventListener('click', closeBigPicture);
-  commentsLoader.addEventListener('click', renderComments);
+  cancelButton.addEventListener('click', onCancelButtonClick);
+  commentsLoader.addEventListener('click', onCommentsLoaderClick);
 };
 
 export { openBigPicture, closeBigPicture, initBigPictureHandlers };

@@ -3,6 +3,12 @@ import { initEffect, resetEffect, updateEffectsPreview } from './effect.js';
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './messages.js';
 
+const DEFAULT_PREVIEW_SRC = 'img/upload-default-image.jpg';
+
+const MAX_HASHTAGS = 5;
+const MAX_HASHTAG_LENGTH = 20;
+const VALID_HASHTAG_REGEX = /^#[a-яёa-z0-9]{1,19}$/iu;
+
 const uploadFileInput = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadForm = document.querySelector('#upload-select-image');
@@ -11,12 +17,6 @@ const submitButton = document.querySelector('#upload-submit');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
-
-const DEFAULT_PREVIEW_SRC = 'img/upload-default-image.jpg';
-
-const MAX_HASHTAGS = 5;
-const MAX_HASHTAG_LENGTH = 20;
-const VALID_HASHTAG_REGEX = /^#[a-яёa-z0-9]{1,19}$/iu;
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',

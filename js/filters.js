@@ -16,19 +16,19 @@ let currentFilter = FilterType.DEFAULT;
 let pictures = [];
 let activeFilterButton = null;
 
-const shuffleArray = (array) => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
+const shuffleArray = (items) => {
+  const shuffledItems = [...items];
+  for (let i = shuffledItems.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    [shuffledItems[i], shuffledItems[j]] = [shuffledItems[j], shuffledItems[i]];
   }
-  return shuffled;
+  return shuffledItems;
 };
 
-const getRandomPictures = (data) => shuffleArray(data).slice(0, RANDOM_PICTURES_COUNT);
+const getRandomPictures = (items) => shuffleArray(items).slice(0, RANDOM_PICTURES_COUNT);
 
-const getDiscussedPictures = (data) =>
-  [...data].sort((a, b) => b.comments.length - a.comments.length);
+const getDiscussedPictures = (items) =>
+  [...items].sort((a, b) => b.comments.length - a.comments.length);
 
 const filterPictures = () => {
   switch (currentFilter) {
@@ -63,8 +63,8 @@ const onFiltersFormClick = (evt) => {
   onFilterChange();
 };
 
-const initFilters = (data) => {
-  pictures = data;
+const initFilters = (loadedPictures) => {
+  pictures = loadedPictures;
   activeFilterButton = filtersForm.querySelector('.img-filters__button--active');
   filtersElement.classList.remove('img-filters--inactive');
   filtersForm.addEventListener('click', onFiltersFormClick);

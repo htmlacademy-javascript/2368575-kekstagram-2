@@ -1,10 +1,3 @@
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const effectsRadioList = document.querySelectorAll('.effects__radio');
-const imgUploadPreview = document.querySelector('.img-upload__preview img');
-const effectLevelContainer = document.querySelector('.img-upload__effect-level');
-const effectsPreviewList = document.querySelectorAll('.effects__preview');
-
 const DEFAULT_EFFECT = 'none';
 
 const EFFECTS = {
@@ -51,6 +44,13 @@ const EFFECTS = {
     unit: ''
   }
 };
+
+const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectLevelValue = document.querySelector('.effect-level__value');
+const effectsRadioList = document.querySelectorAll('.effects__radio');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
+const effectLevelContainer = document.querySelector('.img-upload__effect-level');
+const effectsPreviewList = document.querySelectorAll('.effects__preview');
 
 let currentEffect = DEFAULT_EFFECT;
 

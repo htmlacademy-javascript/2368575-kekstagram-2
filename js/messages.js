@@ -23,7 +23,11 @@ const showSuccessMessage = () => {
     document.removeEventListener('click', onSuccessClick);
   };
 
-  successElement.querySelector('.success__button').addEventListener('click', closeSuccessMessage);
+  const onSuccessButtonClick = () => {
+    closeSuccessMessage();
+  };
+
+  successElement.querySelector('.success__button').addEventListener('click', onSuccessButtonClick);
   document.addEventListener('keydown', onSuccessKeydown);
   document.addEventListener('click', onSuccessClick);
 
@@ -54,7 +58,11 @@ const showErrorMessage = () => {
     document.removeEventListener('click', onErrorClick);
   };
 
-  errorElement.querySelector('.error__button').addEventListener('click', closeErrorMessage);
+  const onErrorButtonClick = () => {
+    closeErrorMessage();
+  };
+
+  errorElement.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
   document.addEventListener('keydown', onErrorKeydown);
   document.addEventListener('click', onErrorClick);
 
